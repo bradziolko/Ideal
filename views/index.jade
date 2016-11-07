@@ -3,13 +3,17 @@ extends layout
 block content
   h1= Login
   form(name="login_form", method="post")
-    div.input
-      span.label Username
-      input(type="text", name="username")
-    div.input
-      span.label Password
-      input(type="text", name="password")
-    div.actions
-      input(type="submit", value="login")
+    div.col-md-12
+      div.form-group.col-md-3
+        label(for='username') Username
+        input.form-control#username(type="text")
+    div.col-md-12
+      div.form-group.col-md-3
+        label(for='password') Password
+        input.form-control#password(type="password")
+    div.col-md-12
+      div.actions
+        input.btn.btn-default(type="submit", value="login")
 
-  a(href="/register") Register
+  div.col-md-12
+    a(href="/register") Register

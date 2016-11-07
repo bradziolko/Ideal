@@ -2,18 +2,16 @@ doctype
 html
   head
     title= title
+    link(rel='stylesheet', href='/css/bootstrap.min.css')
     link(rel='stylesheet', href='/stylesheets/style.css')
     link(rel='stylesheet', href='/stylesheets/chunkfive-fontface.css')
+    script(src='/js/jquery.min.js')
+    script(src='/js/bootstrap.min.js')
+
   body
-    header
-      nav
-        ul
-          li 
-            a(href="/") Home
+    nav.navbar.navbar-default
+      div.container-fluid
+        div.navbar-header
+          a.navbar-brand(href='#') Ideal
     section#wrapper
-        block content
-        footer 
-          section.css-table
-            section.four-column
-              section.cell
-                p Ideal
+      block content
