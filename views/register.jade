@@ -3,33 +3,42 @@ extends layout
 block content
   h1= "Register!"
   form(name="register_form", method="post")
-    div.input
-      span.label First Name
-      input(type="text", name="firstName")
-    div.input
-      span.label Last Name
-      input(type="text", name="lastName")
-    div.input
-      span.label Address Line 1
-      input(type="text", name="address1")
-    div.input
-      span.label Address Line 2
-      input(type="text", name="address2")
-    div.input
-      span.label City
-      input(type="text", name="city")
-    div.input
-      span.label State 
-      input(type="text", name="state")
-    div.input
-      span.label ZIP 
-      input(type="text", name="zip")
+    div.col-md-12
+      div.form-group.col-md-3
+        label(for='firstName') First Name
+        input.form-control#firstname(type='text')
+    div.col-md-12
+      div.form-group.col-md-3
+        label(for='lastname') Last Name
+        input.form-control#lastname(type='text')
+    div.col-md-12
+      div.form-group.col-md-3
+        label(for='address1') Address Line 1
+        input.form-control#address1(type='text')
+    div.col-md-12
+      div.form-group.col-md-3
+        label(for='address2') Address Line 2
+        input.form-control#address2(type='text')
+    div.col-md-12
+      div.form-group.col-md-3
+        label(for='city') City
+        input.form-control#city(type='text')
+    div.col-md-12
+      div.form-group.col-md-3
+        label(for='city') State
+        input.form-control#state(type='text')
+    div.col-md-12
+      div.form-group.col-md-3
+        label(for='city') ZIP 
+        input.form-control#zip(type='text')
     br
-    div.input
-      span.label Email 
-      input(type="text", name="email")
-    div.input
-      span.label Password
-      input(type="text", name="password")
-    div.actions
-      input(type="submit", value="Submit")
+    div.col-md-12
+      div.form-group.col-md-3
+        label(for='city') Email
+        input.form-control#email(type='text')
+    div.col-md-12
+      div.form-group.col-md-3
+        label(for='city') Password
+        input.form-control#password(type='password')
+    div.actions.col-md-12
+      input.btn.btn-primary(type="submit", value="Submit")
