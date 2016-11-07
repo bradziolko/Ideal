@@ -1,5 +1,15 @@
 extends layout
 
 block content
-  h1= title
-  p Welcome to #{title}
+  h1= Login
+  form(name="login_form", method="post")
+    div.input
+      span.label Username
+      input(type="text", name="username")
+    div.input
+      span.label Password
+      input(type="text", name="password")
+    div.actions
+      input(type="submit", value="login")
+
+  a(href="/register") Register

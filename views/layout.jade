@@ -1,7 +1,19 @@
-doctype html
+doctype
 html
   head
     title= title
     link(rel='stylesheet', href='/stylesheets/style.css')
+    link(rel='stylesheet', href='/stylesheets/chunkfive-fontface.css')
   body
-    block content
+    header
+      nav
+        ul
+          li 
+            a(href="/") Home
+    section#wrapper
+        block content
+        footer 
+          section.css-table
+            section.four-column
+              section.cell
+                p Ideal
