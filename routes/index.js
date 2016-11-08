@@ -1,14 +1,17 @@
 var express = require('express');
 var router = express.Router();
 
+var User = require('../models/user');
+var user = new User();
+
 /* GET home page. */
 router.get('/', function(req, res, next) {
   res.render('index', { title: 'Ideal' });
 });
 
 router.post('/', function(req, res) {
-  console.log(req.body.username);
-  console.log(req.body.password);
+  var result = user.getUser(req.body.username, req.body.password);
+  console.log(result);
   res.render('home/user', { title: "Ideal: User Home" });
 });
 
