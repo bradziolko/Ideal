@@ -5,28 +5,25 @@ var nodemailer = require('nodemailer');
 var User = require('../models/user');
 var user = new User();
 
+var Email = require('../email');
+var Email = new Email();
+
 var smtpConfig = {
 	host: 'smtp.gmail.com',
 	port: 465,
 	secure: true,
 	auth: {
-		user: 'idealelectoral@gmail.com',
-		pass: 'verify12'
+		user: Email.getUsername(),
+		pass: Email.getPassword()
 	}
 };
 var transporter = nodemailer.createTransport(smtpConfig);
 var mailOptions = {
-	from: '"Ideal Electoral Registration" <idealelectoral@gmail>',
-	to: 'idealelectoral@gmail.com',
+	from: '"Ideal Electoral Registration"	<' + Email.getUsername() + '>',
+	to: '',
 	subject: 'Confirm registration',
-	text: 'test'
+	text: ''
 };
-transporter.sendMail(mailOptions, function(error, info) {
-	if (error){
-		return console.log(error)
-	}
-	console.log('Message sent: ' + info.response);
-});
 
 /* GET home page. */
 router.get('/', function(req, res, next) {
@@ -44,8 +41,19 @@ router.get('/register', function(req, res) {
 });
 
 router.post('/register', function(req, res) {
-  
-  res.render('index', { title: 'Ideal' });
+  console.log("Email = " + req.body.email);
+  if (req.body.email) {
+    mailOptions.to = req.body.email;
+  }
+  var verificationNumber = Math.floor(Math.random() * 8999999 + 1000000)
+  mailOptions.text = "Your verification number is: " + verificationNumber;
+  transporter.sendMail(mailOptions, function(error, info) {
+	if (error){
+		return console.log(error)
+	}
+	console.log('Message sent: ' + info.response);
+  });
+  res.render('index', { title: 'Ideal', verification: verificationNumber});
 });
 
 module.exports = router;
