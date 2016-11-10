@@ -1,0 +1,12 @@
+extends layout
+
+block content
+  h1= Verify
+  form(name="verify_form", method="post")
+    div.col-md-12
+      div.form-group.col-md-3
+        label(for='checkverification') Email Verification Number
+        input.form-control#checkverification(type="text", name = "checkverification")
+    div.col-md-12
+      div.actions
+        input.btn.btn-default(type="submit", value="Verify Email")
