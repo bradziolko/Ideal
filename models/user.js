@@ -17,18 +17,50 @@ connection.connect(function(err) {
 var User = function() {
 };
 
-User.prototype.getUser = function(email, password) {
-  var auth = false;
-  var query = connection.query("SELECT * FROM user WHERE Email = '" + email + "' AND" +
-    " Password = '" + password + "'", function(err, result) {
-      console.log(result);
-      console.log(result.length);
-      if (result.length == 1) {
-        return true;
-      }
-      else {
-        return false;
-      }
+User.prototype.validateUser = function(email, password) {
+  var query = "SELECT * FROM user WHERE Email = '" + email + "' AND +
+    " Password = '" + password + "'";
+  
+  getResult(query, function (err, rows) {
+    if (!err) {
+      return rows;
+    }
+    else {
+      console.log(err);
+    }
+  });
+
+}
+
+function getResult(query, callback) {
+  executeQuery(query, function (err, rows) {
+    if (!err) {
+      callback(null, rows);
+    }
+    else {
+      callback(true, err);
+    }
+  });
+}
+
+function executeQuery(query, callback) {
+  connection.getConnection(function (err, conn) {
+    if (err) {
+      return callback(err, null);
+    }
+    else if (conn) {
+      conn.query(query, function (err, rows, fields) {
+        conn.release();
+        if (err) {
+          return callback(err, null);
+        }
+        
+        return callback(null, rows);
+      })
+    }
+    else {
+      return callback(true, "No Connection");
+    }
   });
 }
 

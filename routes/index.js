@@ -34,9 +34,8 @@ router.get('/', function(req, res, next) {
 
 router.post('/', function(req, res) {
   console.log(req.body);
-  var result = user.getUser(req.body.username, req.body.password);
-  console.log("Result from getUser: " + result);
-  console.log(result);
+  var result = user.validateUser(req.body.username, req.body.password);
+  console.log("Result from validateUser: " + result);
 
   if (req.body.checkverification == verificationNumber) {
 	  console.log("Email verification sucessful, verification #:" + req.body.checkverification);
