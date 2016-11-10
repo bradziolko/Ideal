@@ -61,7 +61,15 @@ router.post('/register', function(req, res) {
 	  console.log('Message sent: ' + info.response);
     });
   }
-  res.render('index', { title: 'Ideal', verification: verificationNumber});
+  res.render('verify', { title: 'Ideal', verification: verificationNumber});
+});
+
+router.get('/verify', function(req, res) {
+	res.render('verify', {title: 'Ideal'});
+});
+
+router.post('/verify', function(req, res) {
+	res.redirect('/');
 });
 
 module.exports = router;
