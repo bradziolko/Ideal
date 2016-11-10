@@ -1,35 +1,29 @@
 var mysql = require('mysql');
-var connection = mysql.createConnection({
+//var connection = mysql.createConnection({
+var pool = mysql.createPool({
   host: "localhost",
   database: "ideal",
   user: "client",
   password: "client"
 });
 
-connection.connect(function(err) {
-  if (err !== null) {
-    console.log("Couldn't connect to server.");
-    console.log(err);
-  }
-});
-  
-
 var User = function() {
 };
 
-User.prototype.validateUser = function(email, password) {
-  var query = "SELECT * FROM user WHERE Email = '" + email + "' AND +
+User.prototype.validateUser = function(email, password, callback) {
+  var query = "SELECT * FROM user WHERE Email = '" + email + "' AND " +
     " Password = '" + password + "'";
   
   getResult(query, function (err, rows) {
     if (!err) {
-      return rows;
+      console.log("butts");
+      callback(rows);
     }
     else {
       console.log(err);
     }
   });
-
+  console.log("END OF VALIDATE USER");
 }
 
 function getResult(query, callback) {
@@ -44,7 +38,7 @@ function getResult(query, callback) {
 }
 
 function executeQuery(query, callback) {
-  connection.getConnection(function (err, conn) {
+  pool.getConnection(function (err, conn) {
     if (err) {
       return callback(err, null);
     }

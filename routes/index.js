@@ -33,9 +33,10 @@ router.get('/', function(req, res, next) {
 });
 
 router.post('/', function(req, res) {
-  console.log(req.body);
-  var result = user.validateUser(req.body.username, req.body.password);
-  console.log("Result from validateUser: " + result);
+  user.validateUser(req.body.username, req.body.password, function (result) {
+    console.log("Result from validateUser: " + result);
+  });
+  //var result = user.validateUser(req.body.username, req.body.password);
 
   if (req.body.checkverification == verificationNumber) {
 	  console.log("Email verification sucessful, verification #:" + req.body.checkverification);
