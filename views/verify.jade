@@ -1,9 +1,8 @@
 extends layout
 
 block content
-  h1= Login
-  if verification >= 1000000
-    p Verification #{verification}
+  h1= Verify
+  form(name="verify_form", method="post")
     div.col-md-12
       div.form-group.col-md-3
         label(for='checkverification') Email Verification Number
@@ -11,5 +10,3 @@ block content
     div.col-md-12
       div.actions
         input.btn.btn-default(type="submit", value="Verify Email")
-  div.col-md-12
-    a(href="/register") Register

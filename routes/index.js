@@ -41,7 +41,7 @@ router.post('/', function(req, res) {
 	  console.log("Email verification sucessful, verification #:" + req.body.checkverification);
   }
 
-  res.render('home/user', { title: "Ideal: User Home" });
+  res.redirect('home/user');
 });
 
 router.get('/register', function(req, res) {
@@ -52,16 +52,16 @@ router.post('/register', function(req, res) {
   if (req.body.email) {
 	console.log("Email = " + req.body.email);
     mailOptions.to = req.body.email;
-    var verificationNumber = Math.floor(Math.random() * 8999999 + 1000000)
+    var verificationNumber = Math.floor(Math.random() * 8999999 + 1000000);
     mailOptions.text = "Your verification number is: " + verificationNumber;
     transporter.sendMail(mailOptions, function(error, info) {
 	  if (error){
-  		return console.log(error)
+  		return console.log(error);
 	  }
 	  console.log('Message sent: ' + info.response);
     });
   }
-  res.render('verify', { title: 'Ideal', verification: verificationNumber});
+  res.redirect('verify');
 });
 
 router.get('/verify', function(req, res) {
