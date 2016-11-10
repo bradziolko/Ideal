@@ -10,8 +10,9 @@ router.get('/', function(req, res, next) {
 });
 
 router.post('/', function(req, res) {
+  console.log(req.body);
   var result = user.getUser(req.body.username, req.body.password);
-  console.log(result);
+  console.log("Result from getUser: " + result);
   res.render('home/user', { title: "Ideal: User Home" });
 });
 
