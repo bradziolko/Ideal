@@ -22,7 +22,7 @@ var smtpConfig = {
 };
 var transporter = nodemailer.createTransport(smtpConfig);
 var mailOptions = {
-	from: '"Ideal Electoral Registration"	<' + Email.getUsername() + '>',
+	from: '"Ideal Electoral Registration"	<' + emailConfig.email + '>',
 	to: '',
 	subject: 'Confirm registration',
 	text: ''
