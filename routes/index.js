@@ -37,11 +37,14 @@ router.get('/', function(req, res, next) {
 router.post('/', function(req, res) {
   user.validateUser(req.body.username, req.body.password, function (result) {
     console.log("Result from validateUser: " + result);
-    if (result == true) {
+    if (result == 1) {
       res.redirect("/home/user");
     }
+    else if (result == 0) {
+      res.redirect("verify");
+    }
     else {
-      res.render("index", { loginError: "Login Failed" });
+      res.render("index", { error: "Login Failed" });
     }
   });
 
@@ -56,7 +59,7 @@ router.get('/register', function(req, res) {
 
 router.post('/register', function(req, res) {
   if (req.body.email) {
-	console.log("Email = " + req.body.email);
+    console.log("Email = " + req.body.email);
     mailOptions.to = req.body.email;
     var verificationNumber = Math.floor(Math.random() * 8999999 + 1000000);
     mailOptions.text = "Your verification number is: " + verificationNumber;
@@ -67,6 +70,10 @@ router.post('/register', function(req, res) {
 	  console.log('Message sent: ' + info.response);
     });
   }
+  
+  user.registerUser(req.body, verificationNumber, function (result) {
+    console.log("Result from registerUser: " + result);
+  });
   res.redirect('verify');
 });
 
@@ -75,7 +82,22 @@ router.get('/verify', function(req, res) {
 });
 
 router.post('/verify', function(req, res) {
-	res.redirect('/');
+  user.verifyEmail(req.body.email, req.body.verification, function (result) {
+    console.log("Result from verifyEmail: " + result);
+    if (result) {
+      user.setVerified(req.body.email, function (result) {
+        if (result) {
+          res.redirect('/');
+        }
+        else {
+          res.render('verify', { title: 'Ideal', error: 'Verification Set Failed!' });
+        }
+      });
+    }
+    else {
+      res.render('verify', { title: 'Ideal', error: 'Verification Failed!' });
+    }
+  });
 });
 
 router.get('/home/user', function(req, res) {

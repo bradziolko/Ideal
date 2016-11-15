@@ -14,12 +14,40 @@ var User = function() {
 };
 
 User.prototype.validateUser = function(email, password, callback) {
-  var query = "SELECT * FROM user WHERE Email = '" + email + "' AND " +
-    " Password = '" + password + "'";
+  var query = "SELECT * FROM user WHERE email = '" + email + "' AND " +
+    " password = '" + password + "'";
 
   pool.getConnection(function (err, conn) {
     if (err) {
-      return callback(err, null);
+      return callback(-1);
+    }
+    else if (conn) {
+      conn.query(query, function (err, rows, fields) {
+        conn.release();
+        if (err) {
+          console.log("Error with SQL query");
+          console.log(err);
+          callback(-1);
+        }
+
+        if (rows.length == 1) {
+          callback(rows[0].verified);
+        }
+        else {
+          callback(-1);
+        }
+      });
+    }
+  });
+};
+
+User.prototype.registerUser = function(user, verificationNumber, callback) {
+  var query = "INSERT INTO user (email, password, verificationNumber)" +
+    "VALUES ('" + user.email + "', '" + user.password + "', '" + verificationNumber + "')";
+
+  pool.getConnection(function (err, conn) {
+    if (err) {
+      return callback(false);
     }
     else if (conn) {
       conn.query(query, function (err, rows, fields) {
@@ -29,7 +57,30 @@ User.prototype.validateUser = function(email, password, callback) {
           console.log(err);
           callback(false);
         }
+        
+          callback(true);
+      });
+    }
+  });
+};
 
+User.prototype.verifyEmail = function(email, verificationNumber, callback) {
+  var query = "SELECT * FROM user WHERE email = '" + email + "' AND " +
+    " verificationNumber = '" + verificationNumber + "'";
+
+  pool.getConnection(function (err, conn) {
+    if (err) {
+      return callback(false);
+    }
+    else if (conn) {
+      conn.query(query, function (err, rows, fields) {
+        conn.release();
+        if (err) {
+          console.log("Error with SQL query");
+          console.log(err);
+          callback(false);
+        }
+        
         if (rows.length == 1) {
           callback(true);
         }
@@ -39,6 +90,30 @@ User.prototype.validateUser = function(email, password, callback) {
       });
     }
   });
- }
+};
+
+User.prototype.setVerified = function(email, callback) {
+  var query = "UPDATE user " +
+    "SET verified = 1 " +
+    "WHERE email = '" + email + "'";
+
+  pool.getConnection(function (err, conn) {
+    if (err) {
+      return callback(false);
+    }
+    else if (conn) {
+      conn.query(query, function (err, rows, fields) {
+        conn.release();
+        if (err) {
+          console.log("Error with SQL query");
+          console.log(err);
+          callback(false);
+        }
+        
+          callback(true);
+      });
+    }
+  });
+};
 
 module.exports = User;

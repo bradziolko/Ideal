@@ -2,9 +2,9 @@ extends layout
 
 block content
   h1= Login
-  if (locals.loginError)
+  if (locals.error)
     div.error.col-md-12
-      p Login Failed!
+      p locals.error
   form(name="login_form", method="post")
     div.col-md-12
       div.form-group.col-md-3

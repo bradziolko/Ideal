@@ -2,11 +2,18 @@ extends layout
 
 block content
   h1= Verify
+  if (locals.error)
+    div.error.col-md-12
+      p locals.error
   form(name="verify_form", method="post")
     div.col-md-12
       div.form-group.col-md-3
-        label(for='checkverification') Email Verification Number
-        input.form-control#checkverification(type="text", name = "checkverification")
+        label(for='email') Email
+        input.form-control#email(type="text", name = "email")
+    div.col-md-12
+      div.form-group.col-md-3
+        label(for='verification') Email Verification Number
+        input.form-control#verification(type="text", name = "verification")
     div.col-md-12
       div.actions
         input.btn.btn-default(type="submit", value="Verify Email")
