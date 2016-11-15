@@ -5,8 +5,9 @@ var nodemailer = require('nodemailer');
 var User = require('../models/user');
 var user = new User();
 
-var Email = require('../email');
-var Email = new Email();
+var Config = require("../config");
+var config = new Config();
+var emailConfig = config.email();
 
 var verificationNumber = 0;
 
@@ -15,8 +16,8 @@ var smtpConfig = {
 	port: 465,
 	secure: true,
 	auth: {
-		user: Email.getUsername(),
-		pass: Email.getPassword()
+		user: emailConfig.email,
+		pass: emailConfig.password
 	}
 };
 var transporter = nodemailer.createTransport(smtpConfig);

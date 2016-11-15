@@ -2,12 +2,12 @@ var mysql = require("mysql");
 var Config = require("../config");
 var config = new Config();
 
-var conf = config.sql();
+var dbConfig = config.sql();
 var pool = mysql.createPool({
-  host: conf.host,
-  database: conf.database,
-  user: conf.user,
-  password: conf.password
+  host: dbConfig.host,
+  database: dbConfig.database,
+  user: dbConfig.user,
+  password: dbConfig.password
 });
 
 var User = function() {
