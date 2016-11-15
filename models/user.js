@@ -1,10 +1,13 @@
-var mysql = require('mysql');
-//var connection = mysql.createConnection({
+var mysql = require("mysql");
+var Config = require("../config");
+var config = new Config();
+
+var conf = config.sql();
 var pool = mysql.createPool({
-  host: "localhost",
-  database: "ideal",
-  user: "client",
-  password: "client"
+  host: conf.host,
+  database: conf.database,
+  user: conf.user,
+  password: conf.password
 });
 
 var User = function() {
@@ -13,31 +16,7 @@ var User = function() {
 User.prototype.validateUser = function(email, password, callback) {
   var query = "SELECT * FROM user WHERE Email = '" + email + "' AND " +
     " Password = '" + password + "'";
-  
-  getResult(query, function (err, rows) {
-    if (!err) {
-      console.log("butts");
-      callback(rows);
-    }
-    else {
-      console.log(err);
-    }
-  });
-  console.log("END OF VALIDATE USER");
-}
 
-function getResult(query, callback) {
-  executeQuery(query, function (err, rows) {
-    if (!err) {
-      callback(null, rows);
-    }
-    else {
-      callback(true, err);
-    }
-  });
-}
-
-function executeQuery(query, callback) {
   pool.getConnection(function (err, conn) {
     if (err) {
       return callback(err, null);
@@ -46,16 +25,20 @@ function executeQuery(query, callback) {
       conn.query(query, function (err, rows, fields) {
         conn.release();
         if (err) {
-          return callback(err, null);
+          console.log("Error with SQL query");
+          console.log(err);
+          callback(false);
         }
-        
-        return callback(null, rows);
-      })
-    }
-    else {
-      return callback(true, "No Connection");
+
+        if (rows.length == 1) {
+          callback(true);
+        }
+        else {
+          callback(false);
+        }
+      });
     }
   });
-}
+ }
 
 module.exports = User;

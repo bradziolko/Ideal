@@ -32,17 +32,21 @@ router.get('/', function(req, res, next) {
   res.render('index', { title: 'Ideal' });
 });
 
+// POST Login from home page
 router.post('/', function(req, res) {
   user.validateUser(req.body.username, req.body.password, function (result) {
     console.log("Result from validateUser: " + result);
+    if (result == true) {
+      res.redirect("/home/user");
+    }
+    else {
+      res.render("index", { loginError: "Login Failed" });
+    }
   });
-  //var result = user.validateUser(req.body.username, req.body.password);
 
   if (req.body.checkverification == verificationNumber) {
 	  console.log("Email verification sucessful, verification #:" + req.body.checkverification);
   }
-
-  res.redirect('home/user');
 });
 
 router.get('/register', function(req, res) {
@@ -66,11 +70,15 @@ router.post('/register', function(req, res) {
 });
 
 router.get('/verify', function(req, res) {
-	res.render('verify', {title: 'Ideal'});
+	res.render('verify', { title: 'Ideal' });
 });
 
 router.post('/verify', function(req, res) {
 	res.redirect('/');
+});
+
+router.get('/home/user', function(req, res) {
+  res.render('home/user', { title: 'Ideal Home Page' });
 });
 
 module.exports = router;
