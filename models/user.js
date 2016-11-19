@@ -1,6 +1,7 @@
 var mysql = require("mysql");
 var Config = require("../config");
 var config = new Config();
+var bcrypt = require('bcrypt');
 
 var dbConfig = config.sql();
 var pool = mysql.createPool({
@@ -13,54 +14,63 @@ var pool = mysql.createPool({
 var User = function() {
 };
 
+const saltRounds = 10;
+
 User.prototype.validateUser = function(email, password, callback) {
-  var query = "SELECT * FROM user WHERE email = '" + email + "' AND " +
-    " password = '" + password + "'";
+  
+  bcrypt.hash(password, saltRounds, function(err, hash) {
+    var query = "SELECT * FROM user WHERE email = '" + email + "' AND " +
+    " password = '" + hash + "'";
 
-  pool.getConnection(function (err, conn) {
-    if (err) {
-      return callback(-1);
-    }
-    else if (conn) {
-      conn.query(query, function (err, rows, fields) {
-        conn.release();
-        if (err) {
-          console.log("Error with SQL query");
-          console.log(err);
-          callback(-1);
-        }
+    pool.getConnection(function (err, conn) {
+      if (err) {
+        return callback(-1);
+      }
+      else if (conn) {
+        conn.query(query, function (err, rows, fields) {
+          conn.release();
+          if (err) {
+            console.log("Error with SQL query");
+            console.log(err);
+            callback(-1);
+          }
 
-        if (rows.length == 1) {
-          callback(rows[0].verified);
-        }
-        else {
-          callback(-1);
-        }
-      });
-    }
+          if (rows.length == 1) {
+            callback(rows[0].verified);
+          }
+          else {
+            callback(-1);
+          }
+        });
+      }
+    });
   });
 };
 
 User.prototype.registerUser = function(user, verificationNumber, callback) {
-  var query = "INSERT INTO user (email, password, verificationNumber)" +
-    "VALUES ('" + user.email + "', '" + user.password + "', '" + verificationNumber + "')";
-
-  pool.getConnection(function (err, conn) {
-    if (err) {
-      return callback(false);
-    }
-    else if (conn) {
-      conn.query(query, function (err, rows, fields) {
-        conn.release();
-        if (err) {
-          console.log("Error with SQL query");
-          console.log(err);
-          callback(false);
-        }
-        
-          callback(true);
-      });
-    }
+  
+  bcrypt.hash(user.password, saltRounds, function(err, hash) {
+    // Store hash in your password DB.
+    var query = "INSERT INTO user (email, password, verificationNumber)" +
+      "VALUES ('" + user.email + "', '" + hash + "', '" + verificationNumber + "')";
+      
+    pool.getConnection(function (err, conn) {
+      if (err) {
+        return callback(false);
+      }
+      else if (conn) {
+        conn.query(query, function (err, rows, fields) {
+          conn.release();
+          if (err) {
+            console.log("Error with SQL query");
+            console.log(err);
+            callback(false);
+          }
+          
+            callback(true);
+        });
+      }
+    });
   });
 };
 
