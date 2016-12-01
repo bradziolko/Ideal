@@ -51,8 +51,29 @@ User.prototype.registerUser = function(user, verificationNumber, callback) {
   
   bcrypt.hash(user.password, saltRounds, function(err, hash) {
     // Store hash in your password DB.
+    
+    /*
     var query = "INSERT INTO user (email, password, verificationNumber)" +
       "VALUES ('" + user.email + "', '" + hash + "', '" + verificationNumber + "')";
+      */
+      
+    var query = "INSERT INTO user_voter (" +
+      "Firstname, Lastname, " + 
+      "email, password, idType1, " +
+      "addressLine1, addressLine2, city, " +
+      "state, zipCode) " +
+      "VALUES (" + 
+      user.firstname + "," + 
+      user.lastname + "," +
+      user.email + "," +
+      hash + "," +
+      user.idtype1 + "," +
+      user.address1 + "," +
+      user.address2 + "," +
+      user.city + "," +
+      user.state + "," +
+      user.zip + "," +;
+      
       
     pool.getConnection(function (err, conn) {
       if (err) {
