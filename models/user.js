@@ -17,11 +17,8 @@ var User = function() {
 const saltRounds = 10;
 
 User.prototype.validateUser = function(email, password, callback) {
-  
-  bcrypt.hash(password, saltRounds, function(err, hash) {
-    var query = "SELECT * FROM user_voter WHERE email = '" + email + "' AND " +
-    " password = '" + hash + "'";
-
+    var query = "SELECT * FROM user_voter WHERE email = '" + email + "'";
+    
     pool.getConnection(function (err, conn) {
       if (err) {
         return callback(-1);
@@ -36,26 +33,23 @@ User.prototype.validateUser = function(email, password, callback) {
           }
 
           if (rows.length == 1) {
-            callback(rows[0].verified);
+            bcrypt.compare(password, rows[0].password, function(err, res) {
+              if (res == true) {
+                callback(rows[0].verified);
+              }
+            });
           }
           else {
             callback(-1);
           }
         });
-      }
+      };
     });
-  });
 };
 
 User.prototype.registerUser = function(user, verificationNumber, callback) {
   
   bcrypt.hash(user.password, saltRounds, function(err, hash) {
-    // Store hash in your password DB.
-    
-    /*
-    var query = "INSERT INTO user (email, password, verificationNumber)" +
-      "VALUES ('" + user.email + "', '" + hash + "', '" + verificationNumber + "')";
-      */
       
     var query = "INSERT INTO `user_voter`(" +
       "`Firstname`, `Lastname`, `EmailVerificationNumber`, " + 
