@@ -35,6 +35,7 @@ router.get('/', function(req, res, next) {
 
 // POST Login from home page
 router.post('/', function(req, res) {
+  if (req.body.login_type == 1) {
   user.validateUser(req.body.username, req.body.password, function (result) {
     console.log("Result from validateUser: " + result);
     if (result == 1) {
@@ -47,6 +48,23 @@ router.post('/', function(req, res) {
       res.render("index", { error: "Login Failed" });
     }
   });
+  }
+  
+  if (req.body.login_type == 0){
+    console.log("Admin login")
+    user.validateAdmin(req.body.username, req.body.password, function (result) {
+      console.log("This is the result value")
+      console.log(result)
+      if (result == 1) {
+        console.log("Inside required if")
+        res.redirect("/home/admin");
+    }
+    else {
+      res.render("index", { error: "Login Failed" });
+    }
+    });
+  }
+  
 
   if (req.body.checkverification == verificationNumber) {
 	  console.log("Email verification sucessful, verification #:" + req.body.checkverification);
@@ -55,6 +73,10 @@ router.post('/', function(req, res) {
 
 router.get('/register', function(req, res) {
   res.render('register', { title: 'Ideal: Register' });
+});
+
+router.get('/admin', function(req, res) {
+  res.render('admin', { title: 'Ideal: Admin Login' });
 });
 
 router.post('/register', function(req, res) {
@@ -102,6 +124,10 @@ router.post('/verify', function(req, res) {
 
 router.get('/home/user', function(req, res) {
   res.render('home/user', { title: 'Ideal Home Page' });
+});
+
+router.get('/home/admin', function(req, res) {
+  res.render('home/admin', { title: 'Ideal Admin Home Page' });
 });
 
 module.exports = router;
