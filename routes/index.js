@@ -35,6 +35,7 @@ router.get('/', function(req, res, next) {
 
 // POST Login from home page
 router.post('/', function(req, res) {
+  console.log(req.body.login_type)
   if (req.body.login_type == 1) {
   user.validateUser(req.body.username, req.body.password, function (result) {
     console.log("Result from validateUser: " + result);
@@ -49,6 +50,22 @@ router.post('/', function(req, res) {
     }
   });
   }
+  
+  if (req.body.login_type == 2){
+    console.log("Manager login")
+    user.validateManager(req.body.username, req.body.password, function (result) {
+      console.log("This is the result value")
+      console.log(result)
+      if (result == 1) {
+        console.log("Inside required if")
+        res.redirect("/home/manager");
+    }
+    else {
+      res.render("index", { error: "Login Failed" });
+    }
+    });
+  }
+  
   
   if (req.body.login_type == 0){
     console.log("Admin login")
@@ -128,6 +145,10 @@ router.get('/home/user', function(req, res) {
 
 router.get('/home/admin', function(req, res) {
   res.render('home/admin', { title: 'Ideal Admin Home Page' });
+});
+
+router.get('/home/manager', function(req, res) {
+  res.render('home/manager', { title: 'Ideal Manager Home Page' });
 });
 
 module.exports = router;

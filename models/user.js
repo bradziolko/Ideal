@@ -82,6 +82,40 @@ User.prototype.validateAdmin = function(email, password, callback) {
     });
 };
 
+User.prototype.validateManager = function(email, password, callback) {
+  console.log ("Manager login function call")
+    var query = "SELECT * FROM user_manager WHERE email = '" + email + "'";
+    
+    pool.getConnection(function (err, conn) {
+      if (err) {
+        return callback(-1);
+      }
+      else if (conn) {
+        conn.query(query, function (err, rows, fields) {
+          conn.release();
+          if (err) {
+            console.log("Error with SQL query");
+            console.log(err);
+            callback(-1);
+          }
+
+          if (rows.length == 1) {
+            console.log(rows[0].password)
+            if (rows[0].password == password){
+              callback(1)  
+            }
+            else{
+              callback(0)  
+            }
+          }
+          else {
+            callback(-1);
+          }
+        });
+      };
+    });
+};
+
 User.prototype.registerUser = function(user, verificationNumber, callback) {
   
   bcrypt.hash(user.password, saltRounds, function(err, hash) {

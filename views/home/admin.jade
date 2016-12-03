@@ -1,4 +1,12 @@
 extends ../layout
 
+script.
+  function something() {
+    console.log("Is function working")
+  }
+
 block content
   h1= "Admin Home Page"
+  button(onclick = "something()") New Manager
+  
+  
