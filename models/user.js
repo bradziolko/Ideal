@@ -84,6 +84,7 @@ User.prototype.validateAdmin = function(email, password, callback) {
 
 User.prototype.validateManager = function(email, password, callback) {
   console.log ("Manager login function call")
+  console.log("branch change push")
     var query = "SELECT * FROM user_manager WHERE email = '" + email + "'";
     
     pool.getConnection(function (err, conn) {
