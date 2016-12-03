@@ -117,12 +117,16 @@ User.prototype.validateManager = function(email, password, callback) {
     });
 };
 
+User.prototype.registerManager = function(user, verificationNumber, callback){
+  var password = randomstring.generate(6)
+  
+}
+
 User.prototype.registerUser = function(user, verificationNumber, callback) {
   
   bcrypt.hash(user.password, saltRounds, function(err, hash) {
     
-    console.log("I'm running this query")
-    console.log(user.idtype2)
+    
     var voterId = randomstring.generate(6)
       
     var query = "INSERT INTO `user_voter`(" +

@@ -96,6 +96,26 @@ router.get('/admin', function(req, res) {
   res.render('admin', { title: 'Ideal: Admin Login' });
 });
 
+router.post('/managerinitial', function(req, res) {
+   if (req.body.email) {
+    console.log ("------------------------In the initial manager creation -------------------------------")
+    console.log("Email = " + req.body.email);
+    mailOptions.to = req.body.email;
+    var verificationNumber = Math.floor(Math.random() * 8999999 + 1000000);
+    mailOptions.text = "Your verification number is: " + verificationNumber;
+    transporter.sendMail(mailOptions, function(error, info) {
+	  if (error){
+  		return console.log(error);
+	  }
+	  console.log('Message sent: ' + info.response);
+	  res.redirect('/home/admin')
+    });
+  } 
+  user.registerManager(req.body, verificationNUmber, function (result)) {
+    console.log("Result from registerManager: " + result);
+  });
+});
+
 router.post('/register', function(req, res) {
   if (req.body.email) {
     console.log("Email = " + req.body.email);
@@ -150,5 +170,11 @@ router.get('/home/admin', function(req, res) {
 router.get('/home/manager', function(req, res) {
   res.render('home/manager', { title: 'Ideal Manager Home Page' });
 });
+
+router.get('/managerinitial', function(req, res) {
+  res.render('managerinitial', { title: 'Ideal Manager Creation Page' }); 
+});
+
+
 
 module.exports = router;

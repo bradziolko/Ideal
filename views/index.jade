@@ -16,18 +16,18 @@ block content
         input.form-control#password(type="password", name="password")
     div.col-md-12
       div.form-group.col-md-3
-      label.inline
         input.form-control#login1(type="radio", name="login_type", value="1", checked=login=="Voter") 
         | Voter
-      label.inline
+      div.form-group.col-md-3
         input.form-control#login2(type="radio", name="login_type", value="0", checked=login=="Admin")
         | Admin 
-      label.inline
+      div.form-group.col-md-3
         input.form-control#login2(type="radio", name="login_type", value="2", checked=login=="Manager") 
         | Manager
     div.col-md-12
       div.actions
         input.btn.btn-default(type="submit", value="login")
 
-  div.col-md-12
-    a(href="/register") Register
+    div.col-md-12
+      br
+      a(href="/register") Register
