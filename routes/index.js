@@ -111,9 +111,15 @@ router.post('/managerinitial', function(req, res) {
 	  res.redirect('/home/admin')
     });
   } 
-  user.registerManager(req.body, verificationNUmber, function (result)) {
-    console.log("Result from registerManager: " + result);
-  });
+//  user.registerManager(req.body, verificationNUmber, function (result)) {
+//    console.log("Result from registerManager: " + result);
+//  });
+});
+
+router.post('/createcandidate',function(req, res) {
+   user.createCandidate(req.body, function(result) {
+     console.log("Result from registerUser: " + result);
+   });
 });
 
 router.post('/register', function(req, res) {
@@ -173,6 +179,10 @@ router.get('/home/manager', function(req, res) {
 
 router.get('/managerinitial', function(req, res) {
   res.render('managerinitial', { title: 'Ideal Manager Creation Page' }); 
+});
+
+router.get('/createcandidate', function(req, res) {
+  res.render('createcandidate', { title: 'Ideal Candidate Creation Page' }); 
 });
 
 

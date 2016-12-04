@@ -116,11 +116,47 @@ User.prototype.validateManager = function(email, password, callback) {
       };
     });
 };
-
-User.prototype.registerManager = function(user, verificationNumber, callback){
-  var password = randomstring.generate(6)
+User.prototype.createCandidate = function (user, callback) {
+  var candidateId = randomstring.generate(6)
+  var adminId = "admin1@idealrealconfirmation.com"
+  var electionId = "1"
+  var picture = "abc"
+  var gen = "Male"
+  if (user.gender == 1){
+    gen = "Male"
+  }
+  if (user.gender == 0){
+    gen = "Female"
+  }
+  var query = "INSERT INTO `candidate` (" +
+  "`firstName`, `lastName`, `picture`, `dob`, `gender`, `candidateId`, `bio`) " +
+  "VALUES ('" +
+  user.firstName + "', '" +
+  user.lastName + "', '" +
+  picture + "', '" +
+  user.dob + "', '" +
+  gen + "', '" +
+  candidateId + "', '" +
+  user.bio + "')";
+  pool.getConnection(function (err, conn) {
+      if (err) {
+        return callback(false);
+      }
+      else if (conn) {
+        conn.query(query, function (err, rows, fields) {
+          conn.release();
+          if (err) {
+            console.log("Error with SQL query");
+            console.log(err);
+            callback(false);
+          }
+          
+            callback(true);
+        });
+      }
+  });
   
-}
+};
 
 User.prototype.registerUser = function(user, verificationNumber, callback) {
   

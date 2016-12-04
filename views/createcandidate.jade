@@ -1,0 +1,33 @@
+extends layout
+
+block content
+  h1= "Candidate Creation Page"
+  form(name="candidate_form", method="post")
+    div.col-md-12
+      div.form-group.col-md-3
+        label(for='firstName') First Name
+        input.form-control#firstname(type='text', name = "firstname")
+    div.col-md-12
+      div.form-group.col-md-3
+        label(for='lastname') Last Name
+        input.form-control#lastname(type='text', name = "lastname")
+    div.col-md-12
+      div.form-group.col-md-3
+        label(for='dob') Date of Birth
+        input.form-control#dob(type='text', name = "dob")
+      
+    div.col-md-12
+      div.form-group.col-md-3
+        input.form-control#login1(type="radio", name="gender_type", value="1", checked=login=="Male") 
+        |Male
+      div.form-group.col-md-3
+        input.form-control#login2(type="radio", name="gender_type", value="0", checked=login=="Female")
+        |Female
+    div.col-md-12
+      div.form-group.col-md-3
+        div.input
+            label(for= 'Biography') Biography
+            textarea(name="bio", cols="40", rows="5")
+        
+    div.actions.col-md-12
+        input.btn.btn-primary(type="submit", value="Submit")
