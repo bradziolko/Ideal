@@ -20,6 +20,6 @@
     "mysql": "2.12.0",
     "node-gyp": "3.4.0",
     "bcrypt": "0.8.7",
-    "randomstring"
+    "randomstring": "0.0.0"
   }
 }
