@@ -1,14 +1,16 @@
 extends ../layout
 
 script.
-  function something() {
-    console.log("Is function working")
-  }
+	function something() {
+		console.log("Is function working")
+	}
 
 block content
-  h1= "Admin Home Page"
-  a.btn.btn-primary(href="/managerinitial") Create New Manager
-  br
-  a.btn.btn-primary(href="/createcandidate") Create New Candidate
-  br
+	div.col-md-12
+		h1= "Admin Home Page"
+		a.btn.btn-primary(href="/managerinitial") Create New Manager
+		br
+		br
+		a.btn.btn-primary(href="/createcandidate") Create New Candidate
+		br
 
