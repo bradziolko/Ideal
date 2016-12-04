@@ -8,6 +8,7 @@ var bodyParser = require('body-parser');
 
 var index = require('./routes/index');
 var users = require('./routes/users');
+var admin = require('./routes/admin');
 
 var app = express();
 
@@ -26,6 +27,7 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 app.use('/', index);			
 app.use('/users', users);
+app.use('/admin', admin);
 
 // custom bootstrap and jquery
 app.use('/js', express.static(path.join(__dirname, '/node_modules/bootstrap/dist/js')));
