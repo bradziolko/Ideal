@@ -1,0 +1,29 @@
+extends ../layout
+
+block content
+  h1= "Election Creation Page"
+  form(name="election_form", method="post")
+    div.col-md-6
+      div.col-md-12
+        div.form-group.col-md-3
+          label(for='electionName') Election Name
+          input.form-control#electionName(type = 'text', name = "electionName")
+      div.col-md-12
+        div.form-group.col-md-3
+          label(for='startDate') Start Date
+          input.form-control#lastname(type = 'text', name = "lastname")
+      div.col-md-12
+        div.form-group.col-md-3
+          label(for='endDate') End Date
+          input.form-control#endDate(type = 'text', name = "endDate")
+    div.col-md-6
+      div.col-md-12
+        div.form-group.col-md-12
+          label Candidates
+            br
+            each candidate in candidates
+              input(type = "checkbox", name = candidate.candidateId) 
+              = " " + candidate.firstName + " " + candidate.lastName
+       
+    div.actions.col-md-12
+        input.btn.btn-primary(type = "submit", value = "Submit")
