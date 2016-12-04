@@ -37,18 +37,33 @@ router.get('/', function(req, res, next) {
 router.post('/', function(req, res) {
   console.log(req.body.login_type)
   if (req.body.login_type == 1) {
-  user.validateUser(req.body.username, req.body.password, function (result) {
-    console.log("Result from validateUser: " + result);
-    if (result == 1) {
-      res.redirect("/home/user");
-    }
-    else if (result == 0) {
-      res.redirect("verify");
-    }
-    else {
-      res.render("index", { error: "Login Failed" });
-    }
-  });
+		user.validateUser(req.body.username, req.body.password, function (result) {
+			console.log("Result from validateUser: " + result);
+			if (result == 1) {
+				res.redirect("/home/user");
+			}
+			else if (result == 0) {
+				res.redirect("verify");
+			}
+			else {
+				user.validateManager(req.body.username, req.body.password, function (result) {
+					if (result == 1) {
+						res.redirect("/home/manager");
+					}
+					else {
+						user.validateAdmin(req.body.username, req.body.password, function (result) {
+							if (result == 1) {
+								res.redirect("/home/admin");
+							}
+							else {
+								res.render("index", { error: "Login Failed" });
+							}
+						});
+					}
+				});
+				//res.render("index", { error: "Login Failed" });
+			}
+		});
   }
   
   if (req.body.login_type == 2){
