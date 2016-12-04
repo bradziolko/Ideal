@@ -19,6 +19,7 @@
     "nodemailer": "2.6.4",
     "mysql": "2.12.0",
     "node-gyp": "3.4.0",
-    "bcrypt": "0.8.7"
+    "bcrypt": "0.8.7",
+    "randomstring"
   }
 }
