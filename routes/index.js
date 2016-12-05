@@ -9,6 +9,9 @@ var Config = require("../config");
 var config = new Config();
 var emailConfig = config.email();
 
+var Candidate = require('../models/candidate');
+var candidate = new Candidate();
+
 var verificationNumber = 0;
 
 var smtpConfig = {
@@ -35,10 +38,23 @@ router.get('/', function(req, res, next) {
 
 // POST Login from home page
 router.post('/', function(req, res) {
-  console.log(req.body.login_type)
+ // console.log(req.body.login_type)
 	user.validateUser(req.body.username, req.body.password, function (result) {
 		console.log("Result from validateUser: " + result);
 		if (result == 1) {
+		  console.log("POST INDEX")
+		   user.getCurrentUser(req.body.username, function(result1){
+		     console.log("Print user id");
+		     console.log(result1);
+		   });//{
+		  // user.getDetails(function (resultcheck){
+		  //   console.log(resultcheck.length)
+		  //   for (var i =0; i< resultcheck.length; i++){
+		  //     candidate.getCandidateDetails(resultcheck[i].electionId,function(resultcandidate){
+		  //       console.log(resultcandidate);
+		  //     });
+		  //   }
+		  // });
 			res.redirect("/home/user");
 		}
 		else if (result == 0) {

@@ -3,6 +3,7 @@ var Config = require("../config");
 var config = new Config();
 var bcrypt = require('bcrypt');
 var randomstring = require("randomstring");
+var loggedIn = "";
 
 var dbConfig = config.sql();
 var pool = mysql.createPool({
@@ -16,6 +17,30 @@ var User = function() {
 };
 
 const saltRounds = 10;
+
+User.prototype.getDetails = function(callback){
+  var query = "SELECT electionId FROM `zipcode` WHERE zipCode = (SELECT zipCode FROM user_voter WHERE email = '" + global.loggedIn + "')"
+  pool.getConnection(function (err, conn) {
+    if (err) {
+      return callback(-1);
+    } else if (conn) {
+      conn.query(query, function (err, rows, fields) {
+        conn.release();
+        if (err) {
+          console.log("Error with SQL query");
+          console.log(err);
+          callback(-1);
+        }
+        callback(rows);
+      });
+    }
+  });
+};
+
+User.prototype.getCurrentUser = function(user,callback) {
+  global.loggedIn = user
+  callback(global.loggedIn);
+};
 
 User.prototype.validateUser = function(email, password, callback) {
     var query = "SELECT * FROM user_voter WHERE email = '" + email + "'";
@@ -49,7 +74,7 @@ User.prototype.validateUser = function(email, password, callback) {
 };
 
 User.prototype.validateAdmin = function(email, password, callback) {
-  console.log ("Admin login function call")
+ // console.log ("Admin login function call")
     var query = "SELECT * FROM user_admin WHERE email = '" + email + "'";
     
     pool.getConnection(function (err, conn) {
@@ -83,8 +108,8 @@ User.prototype.validateAdmin = function(email, password, callback) {
 };
 
 User.prototype.validateManager = function(email, password, callback) {
-  console.log ("Manager login function call")
-  console.log("branch change push")
+//  console.log ("Manager login function call")
+//  console.log("branch change push")
     var query = "SELECT * FROM user_manager WHERE email = '" + email + "'";
     
     pool.getConnection(function (err, conn) {
