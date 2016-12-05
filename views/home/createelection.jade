@@ -11,19 +11,24 @@ block content
       div.col-md-12
         div.form-group.col-md-3
           label(for='startDate') Start Date
-          input.form-control#lastname(type = 'text', name = "lastname")
+          input.form-control#startDate(type = 'text', name = "startDate")
       div.col-md-12
         div.form-group.col-md-3
           label(for='endDate') End Date
           input.form-control#endDate(type = 'text', name = "endDate")
+      div.col-md-12
+        div.form-group.col-md-3
+          label(for='zip') ZIP Codes 
+          input.form-control#zip(type = 'text', name = "zip")
     div.col-md-6
       div.col-md-12
         div.form-group.col-md-12
           label Candidates
             br
             each candidate in candidates
-              input(type = "checkbox", name = candidate.candidateId) 
+              input(type = "checkbox", name = "candidates[]", value = candidate.candidateId) 
               = " " + candidate.firstName + " " + candidate.lastName
+              br
        
     div.actions.col-md-12
         input.btn.btn-primary(type = "submit", value = "Submit")

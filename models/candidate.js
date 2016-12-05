@@ -13,7 +13,8 @@ var Candidate = function() {
 };
 
 Candidate.prototype.getAll = function(callback) {
-  var query = "SELECT firstName, lastName, candidateId FROM candidate";
+  var query = "SELECT firstName, lastName, candidateId FROM candidate "
+    + "WHERE electionId IS NULL";
   pool.getConnection(function (err, conn) {
     if (err) {
       return callback(-1);
@@ -27,6 +28,27 @@ Candidate.prototype.getAll = function(callback) {
         }
         
         callback(rows);
+      });
+    }
+  });
+};
+
+Candidate.prototype.setElection = function(candidateId, electionId) {
+  var query = "UPDATE candidate "
+    + "SET electionId='" + electionId + "' "
+    + "WHERE candidateId='" + candidateId + "';";
+  console.log(query);
+
+  pool.getConnection(function (err, conn) {
+    if (err) {
+      return;
+    } else if (conn) {
+      conn.query(query, function (err, rows, fields) {
+        conn.release();
+        if (err) {
+          console.log("Error with SQL query");
+          console.log(err);
+        }
       });
     }
   });

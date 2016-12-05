@@ -4,6 +4,12 @@ var router = express.Router();
 var Candidate = require('../models/candidate');
 var candidate = new Candidate();
 
+var Election = require('../models/election');
+var election = new Election();
+
+var Zip = require('../models/zip');
+var zipCode = new Zip();
+
 router.get('/createmanager', function(req, res) {
   res.render('home/createmanager', { title: 'Ideal Manager Creation Page' }); 
 });
@@ -20,8 +26,33 @@ router.get('/createelection', function(req, res) {
 
     res.render('home/createelection', { title: 'Ideal Election Creation Page', candidates: result }); 
   });
+});
 
-  //res.render('home/createelection', { title: 'Ideal Election Creation Page' }); 
+router.post('/createelection', function(req, res) {
+  var candidates = req.body.candidates;
+  var zip = req.body.zip.split(",");
+  console.log("Zip object");
+  console.log(zip);
+  console.log("In create election post.");
+  console.log(req.body);
+  election.create(req.body.electionName, req.body.startDate, req.body.endDate, function (result) {
+    console.log("Result from election.create: " + result);
+    if (result != -1 && candidates != undefined) {
+      for (var i = 0; i < candidates.length; i++) {
+        var cand = candidates[i];
+        candidate.setElection(cand, result);
+      }
+    }
+
+    if (result != -1 && zip != undefined) {
+      for (var i = 0; i < zip.length; i++) {
+        var z = zip[i];
+        zipCode.create(z, result);
+      }
+    }
+
+    res.redirect("/home/admin");
+  });
 });
 
 module.exports = router;
