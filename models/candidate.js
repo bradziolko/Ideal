@@ -54,4 +54,26 @@ Candidate.prototype.setElection = function(candidateId, electionId) {
   });
 };
 
+Candidate.prototype.getCandidatesFromElection = function(electionId, i, callback) {
+  var query = "SELECT * FROM candidate WHERE electionId = '" + electionId + "';";
+  console.log(query);
+
+  pool.getConnection(function (err, conn) {
+    if (err) {
+      return;
+    } else if (conn) {
+      conn.query(query, function (err, rows, fields) {
+        conn.release();
+        if (err) {
+          console.log("Error with SQL query");
+          console.log(err);
+          return;
+        } else {
+          callback(rows, i);
+        }
+      });
+    }
+  });
+};
+
 module.exports = Candidate;

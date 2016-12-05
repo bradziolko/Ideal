@@ -1,0 +1,10 @@
+extends ../layout
+
+block content
+  div.col-md-12
+    h1= "Election Results"
+    each election in elections
+      h3 #{election.electionName}
+      each candidate in election.candidates
+        p #{candidate.firstName} #{candidate.lastName} #{candidate.count}
+      br

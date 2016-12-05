@@ -1,18 +1,16 @@
 extends ../layout
 
-script.
-	function something() {
-		console.log("Is function working")
-	}
-
 block content
-	div.col-md-12
-		h1= "Admin Home Page"
-		a.btn.btn-primary(href="/admin/createmanager") Create New Manager
-		br
-		br
-		a.btn.btn-primary(href="/admin/createcandidate") Create New Candidate
-		br
-		br
-		a.btn.btn-primary(href="/admin/createelection") Create New Election
+  div.col-md-12
+    h1= "Admin Home Page"
+    a.btn.btn-primary(href="/admin/createmanager") Create New Manager
+    br
+    br
+    a.btn.btn-primary(href="/admin/createcandidate") Create New Candidate
+    br
+    br
+    a.btn.btn-primary(href="/admin/createelection") Create New Election
+    br
+    br
+    a.btn.btn-success(href="/admin/viewresults") View Election Results
 

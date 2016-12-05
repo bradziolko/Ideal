@@ -41,6 +41,7 @@ router.post('/createelection', function(req, res) {
       for (var i = 0; i < candidates.length; i++) {
         var cand = candidates[i];
         candidate.setElection(cand, result);
+        election.initializeResult(cand);
       }
     }
 
@@ -52,6 +53,34 @@ router.post('/createelection', function(req, res) {
     }
 
     res.redirect("/home/admin");
+  });
+});
+
+router.get('/viewResults', function(req, res) {
+  var elections = [];
+  var end = 0;
+
+  function assignCandidates(result, i) {
+    elections[i].candidates = result;
+    end++;
+    
+    console.log(end);
+   
+    if (end == elections.length) {
+      console.log("Elections:");
+      console.log(elections);
+      res.render('home/viewResults', { title: 'Ideal Election Results Page', elections: elections });
+    }
+  }
+
+  election.getAll(function (result) {
+    elections = result;
+    console.log("Results from election.getAll");
+    console.log(result);
+
+    for (var i = 0; i < result.length; i++) {
+      candidate.getCandidatesFromElection(result[i].electionId, i, assignCandidates); 
+    }
   });
 });
 
