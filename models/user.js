@@ -19,7 +19,7 @@ var User = function() {
 const saltRounds = 10;
 
 User.prototype.getDetails = function(callback){
-  var query = "SELECT electionId FROM `zipcode` WHERE zipCode = (SELECT zipCode FROM user_voter WHERE email = '" + global.loggedIn + "')"
+  var query = "SELECT electionId, electionName FROM election WHERE electionId IN (SELECT electionId FROM `zipcode` WHERE zipCode = (SELECT zipCode FROM user_voter WHERE email = '" + global.loggedIn + "')) "
   pool.getConnection(function (err, conn) {
     if (err) {
       return callback(-1);

@@ -12,7 +12,48 @@ var pool = mysql.createPool({
 var Candidate = function() {
 };
 
-Candidate.prototype.getCandidateDetails = function(user,callback) {
+Candidate.prototype.updateCount = function(candidateId){
+  var query = "UPDATE candidate SET count = count + 1 WHERE candidateId = '" + candidateId + "'";
+  console.log(query);
+
+  pool.getConnection(function (err, conn) {
+    if (err) {
+      return;
+    } else if (conn) {
+      conn.query(query, function (err, rows, fields) {
+        conn.release();
+        if (err) {
+          console.log("Error with SQL query");
+          console.log(err);
+          return;
+        }
+      });
+    }
+  });
+};
+Candidate.prototype.getCandidatesFromElection = function(electionId, i, callback) {
+  var query = "SELECT * FROM candidate WHERE electionId = '" + electionId + "';";
+  console.log(query);
+
+  pool.getConnection(function (err, conn) {
+    if (err) {
+      return;
+    } else if (conn) {
+      conn.query(query, function (err, rows, fields) {
+        conn.release();
+        if (err) {
+          console.log("Error with SQL query");
+          console.log(err);
+          return;
+        } else {
+          callback(rows, i);
+        }
+      });
+    }
+  });
+};
+
+Candidate.prototype.getCandidateDetails = function(i,user,callback) {
   var query = "SELECT firstName, lastName, candidateId, bio FROM candidate WHERE electionId = '" + user + "' ";
   pool.getConnection(function (err, conn) {
     if (err) {
@@ -25,8 +66,7 @@ Candidate.prototype.getCandidateDetails = function(user,callback) {
           console.log(err);
           callback(-1);
         }
-        
-        callback(rows);
+        callback(i,rows);
       });
     }
   });
