@@ -84,5 +84,13 @@ router.get('/viewResults', function(req, res) {
   });
 });
 
+
+router.post('/createcandidate',function(req, res) {
+   user.createCandidate(req.body, function(result) {
+     console.log("Result from registerUser: " + result);
+     res.redirect('/home/admin');
+   });
+});
+
 module.exports = router;
 

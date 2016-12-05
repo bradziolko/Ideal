@@ -142,6 +142,9 @@ User.prototype.validateManager = function(email, password, callback) {
     });
 };
 User.prototype.createCandidate = function (user, callback) {
+  
+  console.log("user obj");
+  console.log(user);
   var candidateId = randomstring.generate(6)
   var adminId = "admin1@idealrealconfirmation.com"
   var electionId = "1"
@@ -154,15 +157,17 @@ User.prototype.createCandidate = function (user, callback) {
     gen = "Female"
   }
   var query = "INSERT INTO `candidate` (" +
-  "`firstName`, `lastName`, `picture`, `dob`, `gender`, `candidateId`, `bio`) " +
+  "`firstName`, `lastName`, `dob`, `gender`, `candidateId`, `bio`) " +
   "VALUES ('" +
-  user.firstName + "', '" +
-  user.lastName + "', '" +
-  picture + "', '" +
+  user.firstname + "', '" +
+  user.lastname + "', '" +
   user.dob + "', '" +
   gen + "', '" +
   candidateId + "', '" +
   user.bio + "')";
+  
+  console.log("candidate query");
+  console.log(query);
   pool.getConnection(function (err, conn) {
       if (err) {
         return callback(false);

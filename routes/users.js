@@ -52,6 +52,8 @@ router.post('/ballot', function(req, res) {
 		console.log("bfbej");
 		candidate.updateCount(req.body[key]);
 	});
+  
+  res.redirect('/home/user');
 });
 
 router.post('/users/ballot', function(req, res) {

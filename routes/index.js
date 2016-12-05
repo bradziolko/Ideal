@@ -107,7 +107,7 @@ router.post('/admin/createmanager', function(req, res) {
   		return console.log(error);
 	  }
 	  console.log('Message sent: ' + info.response);
-	  res.redirect('/home/admin')
+	  res.redirect('/home/admin');
     });
   } 
   user.registerManager(req.body, password, function (result) {
@@ -115,9 +115,20 @@ router.post('/admin/createmanager', function(req, res) {
   });
 });
 
+
+router.post('/admin/createcandidate',function(req, res) {
+   user.createCandidate(req.body, function(result) {
+     console.log("Result from registerUser: " + result);
+     res.redirect('/home/admin');
+   });
+});
+
+
+
 router.post('/createcandidate',function(req, res) {
    user.createCandidate(req.body, function(result) {
      console.log("Result from registerUser: " + result);
+     res.redirect('/home/admin');
    });
 });
 

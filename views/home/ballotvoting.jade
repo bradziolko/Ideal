@@ -10,7 +10,6 @@ block content
             each election in elections
                 h3 #{election.electionName}
                 each candidate in election.candidates
-                    #{candidate.candidateId}
                     input.form-control#election.electionName(type="radio", name="#{election.electionName}", value="#{candidate.candidateId}", checked=login=="Voter")
                     |#{candidate.firstName} #{candidate.lastName}
                     h3 CANDIDATE BIO
