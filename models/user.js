@@ -183,6 +183,43 @@ User.prototype.createCandidate = function (user, callback) {
   
 };
 
+User.prototype.registerManager = function (user,password,callback){
+  console.log("---------------------");
+  console.log("REGISTER MANAGER FUNCTION CALLED");
+  console.log(user.email)
+  console.log(password)
+  console.log("---------------------");
+//  bcrypt.hash(password, saltRounds, function(err, hash) {
+    var adminId = "admin1@idealrealconfirmation.com"
+    var query = "INSERT INTO `user_manager`(" +
+      "`email`, `password`, `adminId`) " +
+      "VALUES ('" + 
+      user.email + "', '" + 
+      password + "', '" +
+      adminId + "')";
+      
+      pool.getConnection(function (err, conn) {
+      if (err) {
+        console.log("Error here 1");
+        return callback(false);
+      }
+      else if (conn) {
+        conn.query(query, function (err, rows, fields) {
+          conn.release();
+          if (err) {
+            console.log("Error here 2");
+            console.log("Error with SQL query");
+            console.log(err);
+            callback(false);
+          }
+          
+            callback(true);
+        });
+      }
+    });
+//  });
+};
+
 User.prototype.registerUser = function(user, verificationNumber, callback) {
   
   bcrypt.hash(user.password, saltRounds, function(err, hash) {

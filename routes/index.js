@@ -12,6 +12,8 @@ var emailConfig = config.email();
 var Candidate = require('../models/candidate');
 var candidate = new Candidate();
 
+var randomstring = require("randomstring");
+
 var verificationNumber = 0;
 
 var smtpConfig = {
@@ -92,13 +94,14 @@ router.get('/admin', function(req, res) {
   res.render('admin', { title: 'Ideal: Admin Login' });
 });
 
-router.post('/managerinitial', function(req, res) {
+router.post('/admin/createmanager', function(req, res) {
+	var password = randomstring.generate(8);
    if (req.body.email) {
     console.log ("------------------------In the initial manager creation -------------------------------")
     console.log("Email = " + req.body.email);
     mailOptions.to = req.body.email;
-    var verificationNumber = Math.floor(Math.random() * 8999999 + 1000000);
-    mailOptions.text = "Your verification number is: " + verificationNumber;
+    
+    mailOptions.text = "Your password is: " + password;
     transporter.sendMail(mailOptions, function(error, info) {
 	  if (error){
   		return console.log(error);
@@ -107,9 +110,9 @@ router.post('/managerinitial', function(req, res) {
 	  res.redirect('/home/admin')
     });
   } 
-//  user.registerManager(req.body, verificationNUmber, function (result)) {
-//    console.log("Result from registerManager: " + result);
-//  });
+  user.registerManager(req.body, password, function (result) {
+    console.log("Result from registerManager: " + result);
+  });
 });
 
 router.post('/createcandidate',function(req, res) {
