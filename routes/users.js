@@ -15,6 +15,7 @@ router.get('/ballot',function(req, res, next) {
 
 	function assignCandidates(result, i) {
     	elections[i].candidates = result;
+    	console.log(result);
     	end++;
     
     console.log(end);

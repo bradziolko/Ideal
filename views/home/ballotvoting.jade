@@ -2,6 +2,7 @@ extends ../layout
 
 block content
   div.col-md-12
+    a.btn.btn-primary(href="/") Log Out
     h1= "Ballot"
     form(name="ballot_form", method="post")
         div.col-md-12
@@ -12,6 +13,8 @@ block content
                     #{candidate.candidateId}
                     input.form-control#election.electionName(type="radio", name="#{election.electionName}", value="#{candidate.candidateId}", checked=login=="Voter")
                     |#{candidate.firstName} #{candidate.lastName}
+                    h3 CANDIDATE BIO
+                    |#{candidate.bio}
                 br
             div.col-md-12
               div.actions
