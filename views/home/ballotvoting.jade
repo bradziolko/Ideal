@@ -1,0 +1,18 @@
+extends ../layout
+
+block content
+  div.col-md-12
+    h1= "Ballot"
+    form(name="ballot_form", method="post")
+        div.col-md-12
+          div.form-group.col-md-3
+            each election in elections
+                h3 #{election.electionName}
+                each candidate in election.candidates
+                    #{candidate.candidateId}
+                    input.form-control#election.electionName(type="radio", name="#{election.electionName}", value="#{candidate.candidateId}", checked=login=="Voter")
+                    |#{candidate.firstName} #{candidate.lastName}
+                br
+            div.col-md-12
+              div.actions
+                input.btn.btn-default(type="submit", value="Submit")
