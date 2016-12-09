@@ -115,6 +115,26 @@ router.post('/admin/createmanager', function(req, res) {
   });
 });
 
+router.post('/admin/createadmin', function(req, res) {
+	var password = randomstring.generate(8);
+   if (req.body.email) {
+    console.log ("------------------------In the initial manager creation -------------------------------")
+    console.log("Email = " + req.body.email);
+    mailOptions.to = req.body.email;
+    
+    mailOptions.text = "Your password is: " + password;
+    transporter.sendMail(mailOptions, function(error, info) {
+	  if (error){
+  		return console.log(error);
+	  }
+	  console.log('Message sent: ' + info.response);
+	  res.redirect('/home/admin');
+    });
+  } 
+  user.registerAdmin(req.body, password, function (result) {
+    console.log("Result from registerAdmin: " + result);
+  });
+});
 
 router.post('/admin/createcandidate',function(req, res) {
    user.createCandidate(req.body, function(result) {

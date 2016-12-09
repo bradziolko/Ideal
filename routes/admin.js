@@ -14,6 +14,10 @@ router.get('/createmanager', function(req, res) {
   res.render('home/createmanager', { title: 'Ideal Manager Creation Page' }); 
 });
 
+router.get('/createadmin', function(req, res) {
+  res.render('home/createadmin', { title: 'Ideal Admin Creation Page' }); 
+});
+
 router.get('/createcandidate', function(req, res) {
   res.render('home/createcandidate', { title: 'Ideal Candidate Creation Page' }); 
 });

@@ -225,6 +225,41 @@ User.prototype.registerManager = function (user,password,callback){
 //  });
 };
 
+User.prototype.registerAdmin = function (user,password,callback){
+  console.log("---------------------");
+  console.log("REGISTER ADMIN FUNCTION CALLED");
+  console.log(user.email)
+  console.log(password)
+  console.log("---------------------");
+//  bcrypt.hash(password, saltRounds, function(err, hash) {
+    var query = "INSERT INTO `user_admin`(" +
+      "`email`, `password`) " +
+      "VALUES ('" + 
+      user.email + "', '" + 
+      password + "')";
+      
+      pool.getConnection(function (err, conn) {
+      if (err) {
+        console.log("Error here 1");
+        return callback(false);
+      }
+      else if (conn) {
+        conn.query(query, function (err, rows, fields) {
+          conn.release();
+          if (err) {
+            console.log("Error here 2");
+            console.log("Error with SQL query");
+            console.log(err);
+            callback(false);
+          }
+          
+            callback(true);
+        });
+      }
+    });
+//  });
+};
+
 User.prototype.registerUser = function(user, verificationNumber, callback) {
   
   bcrypt.hash(user.password, saltRounds, function(err, hash) {
